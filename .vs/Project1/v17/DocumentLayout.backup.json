@@ -1,0 +1,53 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\study\\Project1\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{6C5F00A2-AD94-4409-9229-D2DBDCEC5F40}|Project1\\Project1.vcxproj|C:\\study\\Project1\\Invader.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{6C5F00A2-AD94-4409-9229-D2DBDCEC5F40}|Project1\\Project1.vcxproj|solutionrelative:Invader.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6C5F00A2-AD94-4409-9229-D2DBDCEC5F40}|Project1\\Project1.vcxproj|C:\\study\\Project1\\Console.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{6C5F00A2-AD94-4409-9229-D2DBDCEC5F40}|Project1\\Project1.vcxproj|solutionrelative:Console.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Invader.c",
+              "DocumentMoniker": "C:\\study\\Project1\\Invader.c",
+              "RelativeDocumentMoniker": "Invader.c",
+              "ToolTip": "C:\\study\\Project1\\Invader.c",
+              "RelativeToolTip": "Invader.c",
+              "ViewState": "AgIAAAIAAAAAAAAAAAAAABsAAAALAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
+              "WhenOpened": "2025-05-11T23:11:21.775Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Console.c",
+              "DocumentMoniker": "C:\\study\\Project1\\Console.c",
+              "RelativeDocumentMoniker": "Console.c",
+              "ToolTip": "C:\\study\\Project1\\Console.c",
+              "RelativeToolTip": "Console.c",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
+              "WhenOpened": "2025-05-11T23:11:10.833Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

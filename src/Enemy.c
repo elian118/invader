@@ -145,17 +145,17 @@ int CheckEnemyPos() {
 // 적 비행기 (격추)상태 확인 - 매 틱마다 실행
 void CheckEnemy(ENEMYSHIP *enemyShip) {
 	int i; // 변수 i를 두 곳 이상의 for문에서 사용중이므로 초기 지역 변수 j만 제거
-	static BULLET boomPos[MAX_MY_BULLET];
-	static BULLET bombBoomPos[MAX_ENEMY];
+	static BULLET boomBulletPos[MAX_MY_BULLET];
+	static BULLET bombBoomPos[MAX_ENEMY]; // 폭탄 위치
 	int bombCleans = 0; // 남은 폭탄에 격추된 잔상들
 	// static int flag; // 사용되는 곳 없음
 
 	// 직전 틱의 격추 잔상("***") 지우기
 	for (i = 0; i < MAX_MY_BULLET ; i++) {
-		if (boomPos[i].flag == TRUE) {
-	       goToXY(boomPos[i].pos); // 격추된 위치로 커서 이동
+		if (boomBulletPos[i].flag == TRUE) {
+	       goToXY(boomBulletPos[i].pos); // 격추된 위치로 커서 이동
 	       printf("   "); // 지우기
-	       boomPos[i].flag = FALSE;
+	       boomBulletPos[i].flag = FALSE;
 		}
 	}
 
@@ -170,13 +170,14 @@ void CheckEnemy(ENEMYSHIP *enemyShip) {
 	}
 
 	// 총알을 순회하며 격추여부 확인
-	CheckBulletHit(enemyShip, myShipBullet, boomPos);
+	CheckBulletHit(enemyShip, myShipBullet, boomBulletPos);
 
 	// 폭탄을 순회하며 격추여부 확인
 	CheckBombHit(enemyShip, myShipBomb, bombBoomPos);
 }
 
 void DrawColorEnemyShip() {
+	// "^V^"
 	ColorSet(12, 0); // Bright Red
 	printf("%c", enemyShipShape[0]);
 
@@ -192,16 +193,15 @@ void DrawColorEnemyShip() {
 void Detonate(int enemyIdx, ENEMYSHIP *enemyShip, BULLET *bombBoomPos) {
 	enemyShip[enemyIdx].flag = FALSE;
 	goToXY(enemyShip[enemyIdx].pos);
-	ColorSet(12, 0);
-	printf("***");
-	PlaySound("../assets/big-bomb-explosion.wav", NULL, SND_FILENAME | SND_ASYNC | SND_NODEFAULT);
+	ColorPrint("***", 12, 0);
+	playSound("assets/big-bomb-explosion.wav");
 	// 폭발 위치 저장
 	bombBoomPos[enemyIdx].pos = enemyShip[enemyIdx].pos;
 	bombBoomPos[enemyIdx].flag = TRUE;
 }
 
 // 총알을 순회하며 격추여부 확인
-void CheckBulletHit(ENEMYSHIP *enemyShip, BULLET *myShipBullet, BULLET *boomPos) {
+void CheckBulletHit(ENEMYSHIP *enemyShip, BULLET *myShipBullet, BULLET *boomBulletPos) {
     for (int i = 0; i < MAX_MY_BULLET; i++) {
         if (myShipBullet[i].flag == TRUE) {
             for (int j = 0; j < MAX_ENEMY; j++) {
@@ -215,11 +215,11 @@ void CheckBulletHit(ENEMYSHIP *enemyShip, BULLET *myShipBullet, BULLET *boomPos)
                         goToXY(enemyShip[j].pos);
                         ColorPrint("***", 11, 0);
                         myShipBullet[i].flag = FALSE;
-                        score += 100;
+                        score += 100 + ((level - 1) * 10);
                         killNum++;
-                        boomPos[i].pos = enemyShip[j].pos;
-                        boomPos[i].flag = TRUE;
-                        PlaySound("../assets/big-bomb-explosion.wav", NULL, SND_FILENAME | SND_ASYNC | SND_NODEFAULT);
+                        boomBulletPos[i].pos = enemyShip[j].pos;
+                        boomBulletPos[i].flag = TRUE;
+                    	playSound("assets/big-bomb-explosion.wav");
                     }
                 }
             }
@@ -262,7 +262,7 @@ void CheckBombHit(ENEMYSHIP *enemyShip, BULLET *myShipBomb, BULLET *bombBoomPos)
                                 }
                             }
                         }
-                        score += killedCount * 100;
+                        score += killedCount * 100 + ((level - 1) * 10);
                         killNum += killedCount;
                     }
                 }

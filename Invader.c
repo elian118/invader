@@ -1,5 +1,6 @@
 #include "include/Main.h"
 UPOINT ptThisMyPos;
+int	   level = 1; // 레벨(난이도)
 int    timeFlag = FALSE;
 int    score, hiscore = 2000, killNum, myShipRestBomb;
 char   *ABoom[8];
@@ -7,15 +8,7 @@ char   *ABoom[8];
 void main(void) {
 	UPOINT        ptEnd;
 	int	loop = 1;
-	
-	ABoom[0] = "i<^>i";
-	ABoom[1] = "i(*)i";
-	ABoom[2] = "(* *)";
-	ABoom[3] = "(** **)";
-	ABoom[4] = " (* *) ";
-	ABoom[5] = "  (*)  ";
-	ABoom[6] = "   *   ";
-	ABoom[7] = "       ";
+
 	ptEnd.x = 36;
 	ptEnd.y = 12;
 	while(loop) {
@@ -31,7 +24,7 @@ void play() {
 	DWORD         Count = gThisTickCount;
 	DWORD         bulletCount = gThisTickCount;
 	UPOINT        ptScore, ptHi;
-	int           enemySpeed = 500;
+	int           enemySpeed = 500 - (level * 50) > 100 ? 500 - (level * 50) : 100;
 
 	score = 0; // 점수 초기화
 
@@ -82,7 +75,7 @@ void play() {
 					break;
 				case 'k':
 					ptMyOldPos.y = ptThisMyPos.y;
-					if (++ptThisMyPos.y > 23) ptThisMyPos.y = 23;
+					if (++ptThisMyPos.y > MY_SHIP_BASE_POSY) ptThisMyPos.y = MY_SHIP_BASE_POSY;
 					DrawMyShip(&ptThisMyPos , &ptMyOldPos);
 					break;
 			   default: break; // 안전장치로 추가
@@ -102,7 +95,7 @@ void play() {
 			goToXY(ptScore);
 			printf("점수 : %d", score);
 			goToXY(ptHi);
-			printf("최고 점수: %d | 남은 폭탄: %d", hiscore, myShipRestBomb);
+			printf("최고 점수: %d | 레벨: %d | 남은 폭탄: %d", hiscore, level, myShipRestBomb);
 
 			if (killNum >= 40) {
 				timeFlag = TRUE;
@@ -110,7 +103,7 @@ void play() {
 				break;
 			}
 
-			if (killNum > 20) enemySpeed = 150;
+			if (killNum > 20) enemySpeed = 150 - (level * 10) > 80 ? 150 - (level * 10) : 80; // 적 비행기 움직임 틱 500ms → 150ms 난이도 상승
 
 	   		Count = gThisTickCount;
 		}
@@ -128,6 +121,15 @@ void play() {
 
 void gameOver (UPOINT *ptEnd, int *loop) {
 	// 폭발 애니메이션
+	ABoom[0] = "i<^>i";
+	ABoom[1] = "i(*)i";
+	ABoom[2] = "(* *)";
+	ABoom[3] = "(** **)";
+	ABoom[4] = " (* *) ";
+	ABoom[5] = "  (*)  ";
+	ABoom[6] = "   *   ";
+	ABoom[7] = "       ";
+
 	DWORD thisTickCount = GetTickCount();
 	DWORD bCount = thisTickCount;
 	int bp = 0;
@@ -136,13 +138,12 @@ void gameOver (UPOINT *ptEnd, int *loop) {
 		if (timeFlag == FALSE) {
 			thisTickCount = GetTickCount();
 
-			if (thisTickCount - bCount > 100) {
-				PlaySound("../assets/big-bomb-explosion.wav", NULL, SND_FILENAME | SND_ASYNC | SND_NODEFAULT);
+			if (thisTickCount - bCount > 100) { // 100ms마다 실행
+				playSound("assets/big-bomb-explosion.wav");
 				goToXY(ptThisMyPos);
 				// 폭발 단계에 따라 색상 변경
-				ColorSet(bp <= 2 ? 12 : bp <= 4 ? 14 : 6, 0);
-				printf("%s", ABoom[bp]);
-				ColorSet(7, 0); // 색상 복귀
+				int bColor = bp <= 2 ? 12 : bp <= 4 ? 14 : 6;
+				ColorPrint(ABoom[bp], bColor, 0);
 				bp++;
 				if (bp > 7) break;
 				bCount = thisTickCount;
@@ -150,23 +151,23 @@ void gameOver (UPOINT *ptEnd, int *loop) {
 		} else break;
 	}
 
-	int input;
 	hiscore = score > hiscore ? score : hiscore; // 최고득점 정보 갱신
 
+	int input;
 	char *printStr = killNum == 40 ? "축하합니다!! 모든 침입자를 격추했습니다!"
 		: score == hiscore ? "최고 기록을 경신했습니다!"
 		: "당신의 비행기는 파괴되었습니다.";
 
-	char *playSound = killNum == 40 || score == hiscore ? "../assets/level-complete.wav"
-		: "../assets/game-fail.wav";
+	char *soundFile = killNum == 40 || score == hiscore ? "assets/level-complete.wav"
+		: "assets/game-fail.wav";
 
-	PlaySound(playSound, NULL, SND_FILENAME | SND_ASYNC | SND_NODEFAULT);
+	playSound(soundFile);
 	goToXY(*ptEnd);
 	printf("%s", printStr);
 
 	ptEnd -> y += 1;
 	goToXY(*ptEnd);
-	printf("게임을 계속하시겠습니까? (y/n)\n");
+	printf(killNum > 20 ? "다음 단계로 넘어가시겠습니까? (y/n)" : "게임을 계속하시겠습니까? (y/n)\n");
 
 	// Y, N 이외의 키 입력 무시
 	do {
@@ -185,6 +186,7 @@ void gameOver (UPOINT *ptEnd, int *loop) {
 			myShipBomb[i].flag = FALSE;
 		}
 
+		killNum > 20 && level++;
 		// bp = 0; // 게임 종료 시 0으로 초기화 되므로, 불필요
 		killNum = 0;
 		timeFlag = 0;
@@ -192,4 +194,10 @@ void gameOver (UPOINT *ptEnd, int *loop) {
 		ptEnd -> y  = 12;
 		*loop = 1;
 	} else *loop = 0;
+}
+
+void playSound(char* soundFile) {
+	char fullPath[256]; // 충분한 크기의 스택 버퍼 할당
+	snprintf(fullPath, sizeof(fullPath), "%s/%s", PROJECT_ROOT_DIR, soundFile);
+	PlaySound(fullPath, NULL, SND_FILENAME | SND_ASYNC | SND_NODEFAULT);
 }

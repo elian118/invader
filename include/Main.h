@@ -37,7 +37,7 @@ extern BULLET     myShipBullet[MAX_MY_BULLET];
 extern BULLET     myShipBomb[MAX_MY_BOMB];
 extern BULLET     enemyBullet[MAX_ENEMY_BULLET];
 extern ENEMYSHIP  enemyShip[MAX_ENEMY];
-extern int        score, killNum, myShipRestBomb;
+extern int        score, killNum, level, myShipRestBomb;
 
 void DrawMyShip(UPOINT *pt,UPOINT*);
 void DrawColorMyShip();
@@ -61,9 +61,11 @@ void BulletShot();
 void DrawBullet();
 void InitBullet();
 void CheckEnemy(ENEMYSHIP*);
-void CheckBulletHit(ENEMYSHIP *enemyShip, BULLET *myShipBullet, BULLET *boomPos);
+void CheckBulletHit(ENEMYSHIP *enemyShip, BULLET *myShipBullet, BULLET *CheckBulletHit);
 void CheckBombHit(ENEMYSHIP *enemyShip, BULLET *myShipBomb, BULLET *bombBoomPos);
 
 void boom(UPOINT pt,int );
 void play();
 void gameOver(UPOINT *ptEnd, int *loop);
+
+void playSound(char* soundFile);

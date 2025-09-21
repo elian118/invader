@@ -11,7 +11,7 @@ void InitMyShip() {
 	myShip.flag = TRUE;
 	myShip.pos.x = MY_SHIP_BASE_POSX;
 	myShip.pos.y = MY_SHIP_BASE_POSY;
-	myShipRestBomb = 3;
+	myShipRestBomb = 3; // 남은 폭탄 수 초기화
 }
 
 void DrawMyShip(UPOINT *pt, UPOINT *oldPt) {
@@ -60,8 +60,9 @@ void DrawMyBomb() {
 
 	for (int i = 0; i < MAX_MY_BOMB ; i++) {
 		if (myShipBomb[i].flag == TRUE) {
-			if (myShipBomb[i].pos.y < 1) { // 폭탄이 아무데도 맞지 않고 맨 위까지 도달한 경우
-				myShipBomb[i].flag = FALSE;
+			// 폭탄이 아무데도 맞지 않고 맨 위까지 도달한 경우
+			if (myShipBomb[i].pos.y < 1) {
+				myShipBomb[i].flag = FALSE; // 폭탄 제거
 				oldPos.x = myShipBomb[i].pos.x;
 				oldPos.y = myShipBomb[i].pos.y + 1; // y가 0에서 더 줄어들이 않으므로 1을 더함
 				goToXY(oldPos);
@@ -88,7 +89,7 @@ void MyBulletShot(UPOINT ptThisMyPos) {
 			myShipBullet[i].flag = TRUE;
 			myShipBullet[i].pos.x = ptThisMyPos.x + 2;
 			myShipBullet[i].pos.y = ptThisMyPos.y - 1;
-			PlaySound("../assets/attack-match-4.wav", NULL, SND_FILENAME | SND_ASYNC | SND_NODEFAULT);
+			playSound("assets/attack-match-4.wav");
 			break;
 		}
 	}
@@ -102,7 +103,7 @@ void MyBombShot(UPOINT ptThisMyPos) {
 				myShipBomb[i].pos.x = ptThisMyPos.x + 2;
 				myShipBomb[i].pos.y = ptThisMyPos.y - 1;
 				myShipRestBomb--; // 폭탄 키 여럿 눌러도 남은 폭탄 숫자 소모 안 되도록 여기에 위치
-				PlaySound("../assets/attack-match.wav", NULL, SND_FILENAME | SND_ASYNC | SND_NODEFAULT);
+				playSound("assets/attack-match.wav");
 				break;
 			}
 		}

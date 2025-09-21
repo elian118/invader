@@ -178,14 +178,11 @@ void CheckEnemy(ENEMYSHIP *enemyShip) {
 
 void DrawColorEnemyShip() {
 	// "^V^"
-	ColorSet(12, 0); // Bright Red
-	printf("%c", enemyShipShape[0]);
-
-	ColorSet(5, 0); // Magenta
-	printf("%c", enemyShipShape[1]);
-
-	ColorSet(12, 0); // Bright Red
-	printf("%c", enemyShipShape[2]);
+	for (int i = 0; i < 3; i++) {
+		int colors[] = {12, 5, 12};
+		ColorSet(colors[i], 0); // Light Cyan
+		printf("%c", enemyShipShape[i]);
+	}
 
 	ColorSet(7, 0);
 }

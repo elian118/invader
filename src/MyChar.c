@@ -129,20 +129,11 @@ int CheckMyBullet(UPOINT ptThisMyPos) {
 
 void DrawColorMyShip() {
 	// "-i^i-"
-	ColorSet(11, 0); // Light Cyan
-	printf("%c", myShipShape[0]);
-
-	ColorSet(6, 0); // Yellow
-	printf("%c", myShipShape[1]);
-
-	ColorSet(9, 0); // Light Blue
-	printf("%c", myShipShape[2]);
-
-	ColorSet(6, 0); // Yellow
-	printf("%c", myShipShape[3]);
-
-	ColorSet(11, 0); // Light Cyan
-	printf("%c", myShipShape[4]);
+	for (int i = 0; i < 5; i++) {
+		int colors[] = {11, 6, 9, 6, 11};
+		ColorSet(colors[i], 0); // Light Cyan
+		printf("%c", myShipShape[i]);
+	}
 
 	ColorSet(7, 0);
 }

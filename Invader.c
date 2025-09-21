@@ -6,8 +6,8 @@ int    score, hiscore = 2000, killNum, myShipRestBomb;
 char   *ABoom[8];
 
 void main(void) {
-	UPOINT        ptEnd;
-	int	loop = 1;
+	UPOINT ptEnd;
+	int	loop = TRUE;
 
 	ptEnd.x = 36;
 	ptEnd.y = 12;
@@ -41,7 +41,7 @@ void play() {
 	ptHi.x =  2;
 	ptHi.y =  1;
 
-	while(TRUE) {
+	while (TRUE) {
 		gThisTickCount = GetTickCount();
 	
 		if (_kbhit()) {
@@ -78,15 +78,13 @@ void play() {
 					if (++ptThisMyPos.y > MY_SHIP_BASE_POSY) ptThisMyPos.y = MY_SHIP_BASE_POSY;
 					DrawMyShip(&ptThisMyPos , &ptMyOldPos);
 					break;
-			   default: break; // 안전장치로 추가
+			    default: break; // 안전장치로 추가
 			}
 		}
 
 		if (gThisTickCount - Count > 150) {
-			if (CheckMyBullet(ptThisMyPos) == 0) {
-				if (score > 2000) hiscore = score;
-				break;
-			}
+			if (CheckMyBullet(ptThisMyPos) == 0) break;
+
 			CheckEnemy(enemyShip);
 			DrawMyBullet();
 			DrawMyBomb();
@@ -103,7 +101,7 @@ void play() {
 				break;
 			}
 
-			if (killNum > 20) enemySpeed = 150 - (level * 10) > 80 ? 150 - (level * 10) : 80; // 적 비행기 움직임 틱 500ms → 150ms 난이도 상승
+			if (killNum > 20) enemySpeed = 150 - (level * 10) > 50 ? 150 - (level * 10) : 50; // 적 비행기 움직임 틱 500ms → 150ms 난이도 상승
 
 	   		Count = gThisTickCount;
 		}
@@ -151,15 +149,16 @@ void gameOver (UPOINT *ptEnd, int *loop) {
 		} else break;
 	}
 
-	hiscore = score > hiscore ? score : hiscore; // 최고득점 정보 갱신
-
 	int input;
-	char *printStr = killNum == 40 ? "축하합니다!! 모든 침입자를 격추했습니다!"
-		: score == hiscore ? "최고 기록을 경신했습니다!"
+	char *printStr = killNum == MAX_ENEMY ? "축하합니다!! 모든 침입자를 격추했습니다!"
+		: score > hiscore ? "최고 기록을 경신했습니다!"
+		: killNum > (MAX_ENEMY / 2) && killNum < MAX_ENEMY ? "현재 레벨을 클리어했습니다!"
 		: "당신의 비행기는 파괴되었습니다.";
 
-	char *soundFile = killNum == 40 || score == hiscore ? "assets/level-complete.wav"
+	char *soundFile = killNum > (MAX_ENEMY / 2) ? "assets/level-complete.wav"
 		: "assets/game-fail.wav";
+
+	hiscore = score > hiscore ? score : hiscore; // 최고득점 정보 갱신
 
 	playSound(soundFile);
 	goToXY(*ptEnd);

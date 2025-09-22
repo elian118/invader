@@ -79,7 +79,7 @@ void DrawMyBomb() {
 			goToXY(oldPos);
 			printf("  ");
 			goToXY(ptPos);
-			ColorPrint("️☢️", 9, 0);
+			ColorPrint("️♠", 9, 0);
 		}
 	}
 }

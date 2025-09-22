@@ -1,4 +1,5 @@
 #include <conio.h>
+#include <ctype.h>
 #include "include/Main.h"
 #include "include/Util.h"
 
@@ -48,41 +49,8 @@ void play() {
 		gThisTickCount = GetTickCount();
 	
 		if (_kbhit()) {
-			switch (_getch()) {
-				case 'a':
-					if (gThisTickCount - bulletCount > 500) {
-						MyBulletShot(ptThisMyPos);
-						bulletCount = gThisTickCount;
-					}
-					break;
-				case 'd':
-					if (gThisTickCount - bulletCount > 500) {
-						MyBombShot(ptThisMyPos);
-						bulletCount = gThisTickCount;
-					}
-					break;
-				case 'j':
-					ptMyOldPos.x = ptThisMyPos.x;
-					if (--ptThisMyPos.x < 1) ptThisMyPos.x = 1;
-					DrawMyShip(&ptThisMyPos , &ptMyOldPos);
-					break;
-				case 'l':
-					ptMyOldPos.x = ptThisMyPos.x;
-					if (++ptThisMyPos.x > 75) ptThisMyPos.x = 75;
-					DrawMyShip(&ptThisMyPos , &ptMyOldPos);
-					break;
-				case 'i':
-					ptMyOldPos.y = ptThisMyPos.y;
-					if (--ptThisMyPos.y < 1) ptThisMyPos.y = 1;
-					DrawMyShip(&ptThisMyPos , &ptMyOldPos);
-					break;
-				case 'k':
-					ptMyOldPos.y = ptThisMyPos.y;
-					if (++ptThisMyPos.y > MY_SHIP_BASE_POSY) ptThisMyPos.y = MY_SHIP_BASE_POSY;
-					DrawMyShip(&ptThisMyPos , &ptMyOldPos);
-					break;
-			    default: break; // 안전장치로 추가
-			}
+			char inputKey = tolower(_getch());
+			handleInput(inputKey, &ptThisMyPos, &ptMyOldPos, gThisTickCount, &bulletCount);
 		}
 
 		if (gThisTickCount - Count > 150) {
@@ -175,7 +143,7 @@ void gameOver (UPOINT *ptEnd, int *loop) {
 
 	// Y, N 이외의 키 입력 무시
 	do {
-		input = _getch();
+		input = tolower(_getch());
 	} while (input != 'y' && input != 'n');
 
 	if (input == 'y') {
@@ -198,4 +166,42 @@ void gameOver (UPOINT *ptEnd, int *loop) {
 		ptEnd -> y  = 12;
 		*loop = 1;
 	} else *loop = 0;
+}
+
+void handleInput(char inputKey, UPOINT *ptThisMyPos, UPOINT *ptMyOldPos, DWORD gThisTickCount, DWORD *bulletCount) {
+	switch (inputKey) {
+		case 'a':
+			if (gThisTickCount - *bulletCount > 500) {
+				MyBulletShot(*ptThisMyPos);
+				*bulletCount = gThisTickCount;
+			}
+			break;
+		case 'd':
+			if (gThisTickCount - *bulletCount > 500) {
+				MyBombShot(*ptThisMyPos);
+				*bulletCount = gThisTickCount;
+			}
+			break;
+		case 'j':
+			ptMyOldPos -> x = ptThisMyPos -> x;
+			if (--ptThisMyPos -> x < 1) ptThisMyPos -> x = 1;
+			DrawMyShip(ptThisMyPos, ptMyOldPos);
+			break;
+		case 'l':
+			ptMyOldPos -> x = ptThisMyPos -> x;
+			if (++ptThisMyPos -> x > 75) ptThisMyPos -> x = 75;
+			DrawMyShip(ptThisMyPos, ptMyOldPos);
+			break;
+		case 'i':
+			ptMyOldPos -> y = ptThisMyPos -> y;
+			if (--ptThisMyPos -> y < 1) ptThisMyPos -> y = 1;
+			DrawMyShip(ptThisMyPos, ptMyOldPos);
+			break;
+		case 'k':
+			ptMyOldPos -> y = ptThisMyPos -> y;
+			if (++ptThisMyPos -> y > MY_SHIP_BASE_POSY) ptThisMyPos -> y = MY_SHIP_BASE_POSY;
+			DrawMyShip(ptThisMyPos, ptMyOldPos);
+			break;
+		default: break;
+	}
 }

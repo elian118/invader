@@ -12,10 +12,6 @@
 #define MY_SHIP_BASE_POSX    38
 #define MY_SHIP_BASE_POSY    23
 
-// #include <windows.h>
-// #include <stdio.h>
-// #include <conio.h>
-// #include <wincon.h>
 #include "Console.h"
 
 typedef struct{  
@@ -64,6 +60,7 @@ void CheckEnemy(ENEMYSHIP*);
 void CheckBulletHit(ENEMYSHIP *enemyShip, BULLET *myShipBullet, BULLET *CheckBulletHit);
 void CheckBombHit(ENEMYSHIP *enemyShip, BULLET *myShipBomb, BULLET *bombBoomPos);
 
+void handleInput(char inputKey, UPOINT *ptThisMyPos, UPOINT *ptMyOldPos, DWORD gThisTickCount, DWORD *bulletCount);
 void boom(UPOINT pt,int );
 void play();
 void gameOver(UPOINT *ptEnd, int *loop);

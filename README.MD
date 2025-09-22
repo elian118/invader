@@ -737,7 +737,7 @@ void main(void) {
         
             // Y, N 이외의 키 입력 무시
             do {
-                input = _getch();
+                input = tolower(_getch());
             } while (input != 'y' && input != 'n');
         }
         ```

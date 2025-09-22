@@ -1,10 +1,11 @@
+#include <conio.h>
 #include "include/Main.h"
 #include "include/Util.h"
 
 UPOINT ptThisMyPos;
 int	   level = 1; // 레벨(난이도)
 int    timeFlag = FALSE;
-int    score, hiscore = 2000, killNum, myShipRestBomb;
+int    score, hiscore = 2000, killNum, myShipRestBomb, ranking[5] = {2000};
 char   *ABoom[8];
 
 void main(void) {
@@ -160,6 +161,7 @@ void gameOver (UPOINT *ptEnd, int *loop) {
 	char *soundFile = killNum > (MAX_ENEMY / 2) ? "assets/level-complete.wav"
 		: "assets/game-fail.wav";
 
+	renewRanking(score, ranking, 5); // 랭킹 갱신
 	hiscore = score > hiscore ? score : hiscore; // 최고득점 정보 갱신
 
 	playSound(soundFile);
@@ -169,6 +171,7 @@ void gameOver (UPOINT *ptEnd, int *loop) {
 	ptEnd -> y += 1;
 	goToXY(*ptEnd);
 	printf(killNum > 20 ? "다음 단계로 넘어가시겠습니까? (y/n)" : "게임을 계속하시겠습니까? (y/n)\n");
+	printRanking(); // 랭킹 출력
 
 	// Y, N 이외의 키 입력 무시
 	do {

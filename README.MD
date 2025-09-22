@@ -11,6 +11,7 @@ C언어로 구현한 불완전 상태의 초기 버전 텍스트 게임 소스�
     - 오브젝트에 색상 넣기
     - 폭탄 기능 넣기
     - 효과음 넣기
+    - 랭킹 추가
     - 기타
       - 코드 스타일 통일
       - 리팩터링
@@ -27,6 +28,9 @@ C언어로 구현한 불완전 상태의 초기 버전 텍스트 게임 소스�
         ```txt
             cmake_minimum_required(VERSION 3.31.6)
             project(Project1)
+     
+            # utf-8 컴파일 옵션 적용
+            add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/source-charset:utf-8>)
             
             # 헤더 파일이 있는 디렉토리를 추가합니다.
             include_directories(include)
@@ -37,6 +41,7 @@ C언어로 구현한 불완전 상태의 초기 버전 텍스트 게임 소스�
                 src/Console.c
                 src/MyChar.c
                 src/Enemy.c
+                src/Util.c
             )
             
             # 생성된 실행 파일에 라이브러리 연결
@@ -336,20 +341,11 @@ void main(void) {
             ...
             void DrawColorMyShip() {
                 // "-i^i-"
-                ColorSet(11, 0); // Light Cyan
-                printf("%c", myShipShape[0]);
-    
-                ColorSet(6, 0); // Yellow
-                printf("%c", myShipShape[1]);
-    
-                ColorSet(9, 0); // Light Blue
-                printf("%c", myShipShape[2]);
-    
-                ColorSet(6, 0); // Yellow
-                printf("%c", myShipShape[3]);
-    
-                ColorSet(11, 0); // Light Cyan
-                printf("%c", myShipShape[4]);
+                for (int i = 0; i < 5; i++) {
+                    int colors[] = {11, 6, 9, 6, 11};
+                    ColorSet(colors[i], 0); // Light Cyan
+                    printf("%c", myShipShape[i]);
+                }
     
                 ColorSet(7, 0); // White → 원래 색 조합으로 복귀
             }
@@ -360,14 +356,11 @@ void main(void) {
             char  enemyShipShape[5] = "^V^";
             ...
             void DrawColorEnemyShip() {
-                ColorSet(12, 0); // Bright Red
-                printf("%c", enemyShipShape[0]);
-
-                ColorSet(5, 0); // Magenta
-                printf("%c", enemyShipShape[1]);
-
-                ColorSet(12, 0); // Bright Red
-                printf("%c", enemyShipShape[2]);
+                for (int i = 0; i < 3; i++) {
+                    int colors[] = {12, 5, 12};
+                    ColorSet(colors[i], 0); // Light Cyan
+                    printf("%c", enemyShipShape[i]);
+                }
 
                 ColorSet(7, 0); // White → 원래 색 조합으로 복귀
             }
@@ -565,7 +558,80 @@ void main(void) {
                 ...
             }
         ```
-   
+   - 랭킹 추가
+     - 랭킹을 기록하고 표시할 파일 입출력 관련 유틸 추가 `Util.c`
+        ```c++
+            void renewRanking(int score, int ranking[], int size) {
+                int insertIdx = -1; // 삽입 위치
+
+                for (int i = 0; i < size; i++) {
+                    if (score == ranking[i]) return; // 이미 같은 값이 있으면 종료
+                    if (score > ranking[i]) {
+                        insertIdx = i; // 삽입 위치 기록
+                        break;
+                    }
+                }
+
+                if (insertIdx == -1) return; // 삽입할 위치가 없다면 종료
+                // 삽입 위치부터 배열 끝까지 한 칸씩 뒤로 밀기
+                for (int i = size - 1; i > insertIdx; i--) ranking[i] = ranking[i - 1];
+                ranking[insertIdx] = score; // 삽입 위치에 점수 입력
+
+                updateRanking(ranking); // 랭킹 갱신
+            }
+
+            void updateRanking(int ranking[]) {
+                mkdir("static");
+
+                FILE *file = fopen("static/ranking.txt", "w");
+                if (file != NULL) {
+                    for (int i = 0; i < 5; i++) {
+                        fprintf(file, "%d\n", ranking[i]);
+                    }
+                }
+
+                fclose(file);
+            }
+
+            void printRanking() {
+                FILE *file = NULL;
+                int ranking;
+                UPOINT titlePos = {42, 15};
+                UPOINT rankPos = {45, 17};
+                int i = 0;
+
+                file = fopen("static/ranking.txt", "r");
+                if (file != NULL) {
+                    for (i = 0; i < 5; i++) {
+                        if (fscanf(file, "%d", &ranking) != EOF) {
+                            if (i == 0) {
+                                goToXY(titlePos);
+                                printf("☆★☆ 최고기록 ☆★☆");
+                            }
+                            goToXY(rankPos);
+                            ranking != 0 && printf("%d위. %d\n", i + 1, ranking);
+                            rankPos.y++;
+                        } else break;
+                    }
+                    fclose(file);
+                }
+            }
+        ```
+     - 게임 종료 시 호출
+        ```c++
+            void gameOver (UPOINT *ptEnd, int *loop) {
+                ...
+       
+                renewRanking(score, ranking, 5); // 랭킹 갱신
+                hiscore = score > hiscore ? score : hiscore; // 최고득점 정보 갱신
+                ...
+       
+                ptEnd -> y += 1;
+                goToXY(*ptEnd);
+                printf(killNum > 20 ? "다음 단계로 넘어가시겠습니까? (y/n)" : "게임을 계속하시겠습니까? (y/n)\n");
+                printRanking(); // 랭킹 출력
+            }
+        ```
 2. 아래 발견된 버그 잡기
    - 위 아래 이동 불가
      - 키 입력 케이스 추가 `invader.c`

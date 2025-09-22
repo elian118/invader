@@ -5,4 +5,5 @@ cmake-build-debug/
 build/
 out/
 x64/
+static/
 CMakeSettings.json

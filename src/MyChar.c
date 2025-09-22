@@ -1,5 +1,6 @@
 #include <windows.h>
 #include "../include/Main.h"
+#include "../include/Util.h"
 
 MYSHIP myShip;
 BULLET myShipBullet[MAX_MY_BULLET];
@@ -78,7 +79,7 @@ void DrawMyBomb() {
 			goToXY(oldPos);
 			printf(" ");
 			goToXY(ptPos);
-			ColorPrint("☢️", 9, 0);
+			ColorPrint("️♠", 9, 0);
 		}
 	}
 }

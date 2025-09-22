@@ -1,13 +1,10 @@
 #include <stdio.h>
+#include "../include/Util.h"
 #include "../include/Console.h"
 
 HANDLE hout;
 // 자주 사용하는 textColor를 앞으로 배치
-void ColorSet(int textColor, int backColor) {
-	HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
-	// (backColor << 4) + textColor = 배경색 4비트 + 글자색 4비트 = 최종 색상 값 ex) 1010 0011 → 초록색 배경에 노란 글씨
-	SetConsoleTextAttribute(handle, (backColor << 4) + textColor);
-}
+
 
 void ColorPrint(char* text, int textColor, int backColor) {
 	ColorSet(textColor, backColor);

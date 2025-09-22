@@ -1,4 +1,6 @@
 #include "include/Main.h"
+#include "include/Util.h"
+
 UPOINT ptThisMyPos;
 int	   level = 1; // 레벨(난이도)
 int    timeFlag = FALSE;
@@ -193,10 +195,4 @@ void gameOver (UPOINT *ptEnd, int *loop) {
 		ptEnd -> y  = 12;
 		*loop = 1;
 	} else *loop = 0;
-}
-
-void playSound(char* soundFile) {
-	char fullPath[256]; // 충분한 크기의 스택 버퍼 할당
-	snprintf(fullPath, sizeof(fullPath), "%s/%s", PROJECT_ROOT_DIR, soundFile);
-	PlaySound(fullPath, NULL, SND_FILENAME | SND_ASYNC | SND_NODEFAULT);
 }

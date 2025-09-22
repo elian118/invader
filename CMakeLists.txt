@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.31.6)
 project(Project1)
 
+# utf-8 컴파일 옵션 적용
+add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/source-charset:utf-8>)
+
 # 헤더 파일이 있는 디렉토리를 추가합니다.
 include_directories(include)
 
@@ -10,6 +13,7 @@ add_executable(Project1
     src/Console.c
     src/MyChar.c
     src/Enemy.c
+    src/Util.c
 )
 
 # 생성된 실행 파일에 라이브러리 연결

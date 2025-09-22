@@ -67,5 +67,3 @@ void CheckBombHit(ENEMYSHIP *enemyShip, BULLET *myShipBomb, BULLET *bombBoomPos)
 void boom(UPOINT pt,int );
 void play();
 void gameOver(UPOINT *ptEnd, int *loop);
-
-void playSound(char* soundFile);

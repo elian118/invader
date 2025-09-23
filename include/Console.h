@@ -1,3 +1,6 @@
+#ifndef CONSOLE_H
+#define CONSOLE_H
+
 #include <windows.h>
 #include <wincon.h>
 
@@ -10,3 +13,5 @@ void ColorPrint(char* text, int textColor, int backColor);
 void InitConsole();
 void goToXY(UPOINT pt);
 void ClearScreen();
+
+#endif

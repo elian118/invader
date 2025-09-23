@@ -1,3 +1,6 @@
+#ifndef MAIN_H
+#define MAIN_H
+
 #define MAX_ENEMY            40
 #define MAX_ENEMY_BASE_ROW    4
 #define MAX_ENEMY_BASE_COL   10
@@ -64,3 +67,5 @@ void handleInput(char inputKey, UPOINT *ptThisMyPos, UPOINT *ptMyOldPos, DWORD g
 void boom(UPOINT pt,int );
 void play();
 void gameOver(UPOINT *ptEnd, int *loop);
+
+#endif

@@ -64,14 +64,14 @@ void DrawMyBomb() {
 			// 폭탄이 아무데도 맞지 않고 맨 위까지 도달한 경우
 			if (myShipBomb[i].pos.y < 1) {
 				myShipBomb[i].flag = FALSE; // 폭탄 제거
-				oldPos.x = myShipBomb[i].pos.x + 1;
+				oldPos.x = myShipBomb[i].pos.x;
 				oldPos.y = myShipBomb[i].pos.y + 1; // y가 0에서 더 줄어들이 않으므로 1을 더함
 				goToXY(oldPos);
 				printf("  "); // 맨 위까지 도달한 폭탄 잔상 제거
 				continue;
 			}
 
-			oldPos.x = myShipBomb[i].pos.x + 1;
+			oldPos.x = myShipBomb[i].pos.x;
 			oldPos.y = myShipBomb[i].pos.y;
 			--myShipBomb[i].pos.y;
 			ptPos.x = myShipBomb[i].pos.x;
@@ -132,7 +132,7 @@ void DrawColorMyShip() {
 	// "-i^i-"
 	for (int i = 0; i < 5; i++) {
 		int colors[] = {11, 6, 9, 6, 11};
-		ColorSet(colors[i], 0); // Light Cyan
+		ColorSet(colors[i], 0);
 		printf("%c", myShipShape[i]);
 	}
 

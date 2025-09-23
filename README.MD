@@ -96,11 +96,13 @@ C언어로 구현한 불완전 상태의 초기 버전 텍스트 게임 소스�
            ├───include
            │       Console.h
            │       Main.h
+           │       Util.h
            │                       
            ├───src
            │       Console.c
            │       Enemy.c
            │       MyChar.c
+           │       Util.c
            │   ...    
            └───x64
            └───Debug
@@ -263,7 +265,7 @@ void main(void) {
 ---
 
 1. 프로그램 개선
-   - 최고점수 반영 및 표시 + 점수별 게임 오버 메시지 변경
+   - 최고점수 반영 및 표시 + 점수별 게임 오버 메시지 변경 `Invader.c`
         ```c++
         void play() {
             ...
@@ -326,7 +328,7 @@ void main(void) {
                 ...
         ```
    - 오브젝트에 색상 넣기
-     - 색상 설정 유틸 추가 `console.h`
+     - 색상 설정 유틸 추가 `Util.c`
         ```c++
            void ColorSet(int textColor, int backColor) {
                HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -343,7 +345,7 @@ void main(void) {
                 // "-i^i-"
                 for (int i = 0; i < 5; i++) {
                     int colors[] = {11, 6, 9, 6, 11};
-                    ColorSet(colors[i], 0); // Light Cyan
+                    ColorSet(colors[i], 0);
                     printf("%c", myShipShape[i]);
                 }
     
@@ -358,7 +360,7 @@ void main(void) {
             void DrawColorEnemyShip() {
                 for (int i = 0; i < 3; i++) {
                     int colors[] = {12, 5, 12};
-                    ColorSet(colors[i], 0); // Light Cyan
+                    ColorSet(colors[i], 0);
                     printf("%c", enemyShipShape[i]);
                 }
 
@@ -539,7 +541,7 @@ void main(void) {
             PROJECT_ROOT_DIR="${CMAKE_SOURCE_DIR}"
         )
         ```
-     - 효과음 재생 유틸 추가 `Invader.c`
+     - 효과음 재생 유틸 추가 `Util.c`
         ```c++
             void playSound(char* soundFile) {
                 char fullPath[256]; // 충분한 크기의 스택 버퍼 할당
@@ -636,27 +638,36 @@ void main(void) {
    - 위 아래 이동 불가
      - 키 입력 케이스 추가 `invader.c`
         ```c++
+            #include <ctype.h>
+            ...
             UPOINT ptThisMyPos; // 내 비행기 위치 포인터
             ...
             void play() {
                 static UPOINT ptMyOldPos; // 내 비행기 직전 위치 포인터 → 다른 곳에서도 추적 가능해야 하므로 static 선언
                 ...
    	            if (_kbhit()) {
-   		            switch (_getch()) {
-                        ...
-                        case 'i': // 위
-                            ptMyOldPos.y = ptThisMyPos.y;
-                            if (--ptThisMyPos.y < 1) ptThisMyPos.y = 1;
-                            DrawMyShip(&ptThisMyPos , &ptMyOldPos);
-                            break;
-                        case 'k': // 아래
-                            ptMyOldPos.y = ptThisMyPos.y;
-                            if (++ptThisMyPos.y > MY_SHIP_BASE_POSY) ptThisMyPos.y = MY_SHIP_BASE_POSY; // 기본 위치 줄(23) 밑으로 내려가지 못하게 제한
-                            DrawMyShip(&ptThisMyPos , &ptMyOldPos);
-                            break;
-                       default: break; // 안전장치로 추가
-                    }
+                    char inputKey = tolower(_getch());
+                    handleInput(inputKey, &ptThisMyPos, &ptMyOldPos, gThisTickCount, &bulletCount);
                 }
+                ...
+            }
+            ...
+            void handleInput(char inputKey, UPOINT *ptThisMyPos, UPOINT *ptMyOldPos, DWORD gThisTickCount, DWORD *bulletCount) {
+                switch (inputKey) {
+                    ...
+                    case 'i': // 위
+                        ptMyOldPos.y = ptThisMyPos.y;
+                        if (--ptThisMyPos.y < 1) ptThisMyPos.y = 1;
+                        DrawMyShip(&ptThisMyPos , &ptMyOldPos);
+                        break;
+                    case 'k': // 아래
+                        ptMyOldPos.y = ptThisMyPos.y;
+                        if (++ptThisMyPos.y > MY_SHIP_BASE_POSY) ptThisMyPos.y = MY_SHIP_BASE_POSY; // 기본 위치 줄(23) 밑으로 내려가지 못하게 제한
+                        DrawMyShip(&ptThisMyPos , &ptMyOldPos);
+                        break;
+                    default: break; // 안전장치로 추가
+                }
+            }
         ```
      - 위 아래 이동 직후 플레이어 비행기 잔상 완벽 제거 `MyChar.c`
         ```c++

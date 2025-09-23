@@ -4,7 +4,7 @@ project(Project1)
 # utf-8 컴파일 옵션 적용
 add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/source-charset:utf-8>)
 
-# 헤더 파일이 있는 디렉토리를 추가합니다.
+# 헤더 파일이 있는 디렉토리 추가
 include_directories(include)
 
 # 소스 파일이 있는 디렉토리와 파일 지정

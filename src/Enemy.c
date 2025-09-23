@@ -181,7 +181,7 @@ void DrawColorEnemyShip() {
 	// "^V^"
 	for (int i = 0; i < 3; i++) {
 		int colors[] = {12, 5, 12};
-		ColorSet(colors[i], 0); // Light Cyan
+		ColorSet(colors[i], 0);
 		printf("%c", enemyShipShape[i]);
 	}
 

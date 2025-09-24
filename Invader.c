@@ -122,12 +122,14 @@ void gameOver (UPOINT *ptEnd, int *loop) {
 	}
 
 	int input;
-	char *printStr = killNum == MAX_ENEMY ? "축하합니다!! 모든 침입자를 격추했습니다!"
+	char *printStr =
+		killNum == MAX_ENEMY ? "축하합니다!! 모든 침입자를 격추했습니다!"
 		: score > hiscore ? "최고 기록을 경신했습니다!"
 		: killNum > (MAX_ENEMY / 2) && killNum < MAX_ENEMY ? "현재 레벨을 클리어했습니다!"
 		: "당신의 비행기는 파괴되었습니다.";
 
-	char *soundFile = killNum > (MAX_ENEMY / 2) ? "assets/level-complete.wav"
+	char *soundFile = killNum > (MAX_ENEMY / 2)
+		? "assets/level-complete.wav"
 		: "assets/game-fail.wav";
 
 	RenewRanking(score, ranking, 5); // 랭킹 갱신

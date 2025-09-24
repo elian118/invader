@@ -4,7 +4,7 @@
 #include "include/Util.h"
 
 UPOINT ptThisMyPos;
-int	   level = 1; // 레벨(난이도)
+int	   level = 0; // 레벨(난이도)
 int    timeFlag = FALSE;
 int    score, hiscore = 2000, killNum, myShipRestBomb, ranking[5] = {2000};
 char   *ABoom[8];
@@ -65,7 +65,7 @@ void play() {
 			goToXY(ptScore);
 			printf("점수 : %d", score);
 			goToXY(ptHi);
-			printf("최고 점수: %d | 레벨: %d | 남은 폭탄: %d", hiscore, level, myShipRestBomb);
+			printf("최고 점수: %d | 레벨: %d | 남은 폭탄: %d", hiscore, level + 1, myShipRestBomb);
 
 			if (killNum >= 40) {
 				timeFlag = TRUE;
@@ -73,7 +73,7 @@ void play() {
 				break;
 			}
 
-			if (killNum > 20) enemySpeed = 150 - (level * 10) > 50 ? 150 - (level * 10) : 50; // 적 비행기 움직임 틱 500ms → 150ms 난이도 상승
+			if (killNum > 20) enemySpeed = 150 - (level * 10) > 60 ? 150 - (level * 10) : 60; // 적 비행기 움직임 틱 500ms → 150ms 난이도 상승
 
 	   		Count = gThisTickCount;
 		}

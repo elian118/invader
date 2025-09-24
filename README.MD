@@ -301,7 +301,7 @@ void main(void) {
    - 난이도(레벨) 기능 추가
      - `Invader.c`
         ```c++
-            int	   level = 1; // 레벨(난이도)
+            int	   level = 0; // 레벨(난이도)
             
             ...
             void play() {
@@ -312,9 +312,9 @@ void main(void) {
                     ...
                     if (gThisTickCount - Count > 150) {
                         ...
-                        printf("최고 점수: %d | 레벨: %d | 남은 폭탄: %d", hiscore, level, myShipRestBomb);
+                        printf("최고 점수: %d | 레벨: %d | 남은 폭탄: %d", hiscore, level + 1, myShipRestBomb);
                         ...
-                        if (killNum > 20) enemySpeed = 150 - (level * 10) > 80 ? 150 - (level * 10) : 80; // 적 비행기 움직임 틱 500ms → 150ms 난이도 상승
+                        if (killNum > 20) enemySpeed = 150 - (level * 10) > 60 ? 150 - (level * 10) : 60; // 적 비행기 움직임 틱 500ms → 150ms 난이도 상승
             ...   
             void gameOver (UPOINT *ptEnd, int *loop) {
                 ...

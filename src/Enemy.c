@@ -213,7 +213,7 @@ void CheckBulletHit(ENEMYSHIP *enemyShip, BULLET *myShipBullet, BULLET *boomBull
                         goToXY(enemyShip[j].pos);
                         ColorPrint("***", 11, 0);
                         myShipBullet[i].flag = FALSE;
-                        score += 100 + ((level - 1) * 10);
+                        score += 100 + (level * 10);
                         killNum++;
                         boomBulletPos[i].pos = enemyShip[j].pos;
                         boomBulletPos[i].flag = TRUE;
@@ -255,7 +255,7 @@ void CheckBombHit(ENEMYSHIP *enemyShip, BULLET *myShipBomb, BULLET *bombBoomPos)
                                 }
                             }
                         }
-                        score += killedCount * 100 + ((level - 1) * 10);
+                        score += killedCount * 100 + (level * 10);
                         killNum += killedCount;
                     }
                 }

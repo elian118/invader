@@ -111,14 +111,16 @@ void MyBombShot(UPOINT ptThisMyPos) {
 	}
 }
 
-int CheckMyBullet(UPOINT ptThisMyPos) {
+int IsHitByEnemyBullet(UPOINT ptThisMyPos) {
 	int flag = FALSE;
 
 	for (int i = 0; i < MAX_ENEMY_BULLET ; i++) {
 		if (enemyBullet[i].flag == TRUE) {
-			if (ptThisMyPos.x <= enemyBullet[i].pos.x &&
+			const int isHit = ptThisMyPos.x <= enemyBullet[i].pos.x &&
 				(enemyBullet[i].pos.x <= ptThisMyPos.x + 4) &&
-			    enemyBullet[i].pos.y == ptThisMyPos.y ) {
+				enemyBullet[i].pos.y == ptThisMyPos.y;
+
+			if (isHit) {
 				flag = TRUE;
 				break;
 			}

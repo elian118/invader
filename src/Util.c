@@ -15,7 +15,7 @@ void playSound(char* soundFile) {
     PlaySound(fullPath, NULL, SND_FILENAME | SND_ASYNC | SND_NODEFAULT);
 }
 
-void renewRanking(int score, int ranking[], int size) {
+void RenewRanking(int score, int ranking[], int size) {
     int insertIdx = -1; // 삽입 위치
 
     for (int i = 0; i < size; i++) {
@@ -31,10 +31,10 @@ void renewRanking(int score, int ranking[], int size) {
     for (int i = size - 1; i > insertIdx; i--) ranking[i] = ranking[i - 1];
     ranking[insertIdx] = score; // 삽입 위치에 점수 입력
 
-    updateRanking(ranking); // 랭킹 갱신
+    UpdateRanking(ranking); // 랭킹 갱신
 }
 
-void updateRanking(int ranking[]) {
+void UpdateRanking(int ranking[]) {
     mkdir("static");
 
     FILE *file = fopen("static/ranking.txt", "w");
@@ -47,7 +47,7 @@ void updateRanking(int ranking[]) {
     fclose(file);
 }
 
-void printRanking() {
+void PrintRanking() {
     FILE *file = NULL;
     int ranking;
     UPOINT titlePos = {42, 15};
@@ -70,7 +70,7 @@ void printRanking() {
     }
 }
 
-void readRanking() {
+void ReadRanking() {
     FILE *file = NULL;
     int rank;
 

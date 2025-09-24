@@ -7,9 +7,9 @@
 
 void ColorSet(int textColor, int backColor);
 void playSound(char* soundFile);
-void renewRanking(int score, int ranking[], int size);
-void updateRanking(int ranking[]);
-void printRanking();
-void readRanking();
+void RenewRanking(int score, int ranking[], int size);
+void UpdateRanking(int ranking[]);
+void PrintRanking();
+void ReadRanking();
 
 #endif

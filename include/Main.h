@@ -45,7 +45,7 @@ void MyBulletShot(UPOINT);
 void MyBombShot(UPOINT);
 void DrawMyBullet();
 void DrawMyBomb();
-int  CheckMyBullet(UPOINT ptThisMyPos);
+int  IsHitByEnemyBullet(UPOINT ptThisMyPos);
 int  CheckMyBomb(UPOINT ptThisMyPos);
 void Detonate(int enemyIdx, ENEMYSHIP *enemyShip, BULLET *bombBoomPos);
 

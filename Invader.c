@@ -15,7 +15,7 @@ void main(void) {
 
 	ptEnd.x = 36;
 	ptEnd.y = 12;
-	readRanking();
+	ReadRanking();
 	while(loop) {
 		play();
 		gameOver(&ptEnd, &loop);
@@ -55,7 +55,7 @@ void play() {
 		}
 
 		if (gThisTickCount - Count > 150) {
-			if (CheckMyBullet(ptThisMyPos) == 0) break;
+			if (IsHitByEnemyBullet(ptThisMyPos) == 0) break;
 
 			CheckEnemy(enemyShip);
 			DrawMyBullet();
@@ -130,7 +130,7 @@ void gameOver (UPOINT *ptEnd, int *loop) {
 	char *soundFile = killNum > (MAX_ENEMY / 2) ? "assets/level-complete.wav"
 		: "assets/game-fail.wav";
 
-	renewRanking(score, ranking, 5); // 랭킹 갱신
+	RenewRanking(score, ranking, 5); // 랭킹 갱신
 	hiscore = score > hiscore ? score : hiscore; // 최고득점 정보 갱신
 
 	playSound(soundFile);
@@ -140,7 +140,7 @@ void gameOver (UPOINT *ptEnd, int *loop) {
 	ptEnd -> y += 1;
 	goToXY(*ptEnd);
 	printf(killNum > 20 ? "다음 단계로 넘어가시겠습니까? (y/n)" : "게임을 계속하시겠습니까? (y/n)\n");
-	printRanking(); // 랭킹 출력
+	PrintRanking(); // 랭킹 출력
 
 	// Y, N 이외의 키 입력 무시
 	do {

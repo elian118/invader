@@ -219,7 +219,7 @@ void play() {
 	    ...
 	    // 이전 틱과 150ms가 차이나면 실행 → 150ms마다 실행, 대상: 플레이어 관련 오브젝트
 	    if (gThisTickCount - Count > 150) {
-	        if (CheckMyBullet(ptThisMyPos) == 0) {
+	        if (IsHitByEnemyBullet(ptThisMyPos) == 0) {
 	            if (score > 2000) hiscore = score;
 	            break;
             }
@@ -558,7 +558,7 @@ void main(void) {
    - 랭킹 추가
      - 랭킹을 기록하고 표시할 파일 입출력 관련 유틸 추가 `Util.c`
         ```c++
-            void renewRanking(int score, int ranking[], int size) {
+            void RenewRanking(int score, int ranking[], int size) {
                 int insertIdx = -1; // 삽입 위치
 
                 for (int i = 0; i < size; i++) {
@@ -577,7 +577,7 @@ void main(void) {
                 updateRanking(ranking); // 랭킹 갱신
             }
 
-            void updateRanking(int ranking[]) {
+            void UpdateRanking(int ranking[]) {
                 mkdir("static");
 
                 FILE *file = fopen("static/ranking.txt", "w");
@@ -590,7 +590,7 @@ void main(void) {
                 fclose(file);
             }
 
-            void printRanking() {
+            void PrintRanking() {
                 FILE *file = NULL;
                 int ranking;
                 UPOINT titlePos = {42, 15};
@@ -614,7 +614,7 @@ void main(void) {
                 }
             }
        
-            void readRanking() {
+            void ReadRanking() {
                 FILE *file = NULL;
                 int rank;
 

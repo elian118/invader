@@ -1,4 +1,6 @@
 #include "../include/Util.h"
+
+#include "Main.h"
 #include "../include/Console.h"
 
 void ColorSet(int textColor, int backColor) {
@@ -50,11 +52,10 @@ void printRanking() {
     int ranking;
     UPOINT titlePos = {42, 15};
     UPOINT rankPos = {45, 17};
-    int i = 0;
 
     file = fopen("static/ranking.txt", "r");
     if (file != NULL) {
-        for (i = 0; i < 5; i++) {
+        for (int i = 0; i < 5; i++) {
             if (fscanf(file, "%d", &ranking) != EOF) {
                 if (i == 0) {
                     goToXY(titlePos);
@@ -66,5 +67,19 @@ void printRanking() {
             } else break;
         }
         fclose(file);
+    }
+}
+
+void readRanking() {
+    FILE *file = NULL;
+    int rank;
+
+    file = fopen("static/ranking.txt", "r");
+    if (file != NULL) {
+        for (int i = 0; i < 5; i++) {
+            if (fscanf(file, "%d", &rank) != EOF) ranking[i] = rank;
+            if (i == 0) hiscore = rank > hiscore ? rank : hiscore;
+            else break;
+        }
     }
 }

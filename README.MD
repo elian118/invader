@@ -483,22 +483,17 @@ void main(void) {
                                 if (isShotDown) {
                                     int killedCount = 0;
                                     myShipBomb[i].flag = FALSE;
-
                                     Detonate(j, enemyShip, bombBoomPos);
+                    	            UPOINT bombHitEnemy = {j / MAX_ENEMY_BASE_COL, j % MAX_ENEMY_BASE_COL};
                                     killedCount++;
 
-                                    int row = j / MAX_ENEMY_BASE_COL;
-                                    int col = j % MAX_ENEMY_BASE_COL;
-                                    // 반복 실행을 위한 상하좌우 좌표 배열
-                                    int dx[] = {0, 0, -1, 1};
-                                    int dy[] = {-1, 1, 0, 0};
-
                                     for (int k = 0; k < 4; k++) {
-                                        int bRow = row + dy[k];
-                                        int bCol = col + dx[k];
+                                        // 반복 실행을 위한 상하좌우 2차원 좌표 배열
+	                                    int dXY[4][2] = {{0, -1}, {0, 1}, {-1, 0}, {1, 0}};
+	                                    UPOINT t = {bombHitEnemy.x + dXY[k][0], bombHitEnemy.y + dXY[k][1]};
 
-                                        if (bRow >= 0 && bRow < MAX_ENEMY_BASE_ROW && bCol >= 0 && bCol < MAX_ENEMY_BASE_COL) {
-                                            int idx = bRow * MAX_ENEMY_BASE_COL + bCol;
+                                        if (t.x >= 0 && t.x < MAX_ENEMY_BASE_ROW && t.y >= 0 && t.y < MAX_ENEMY_BASE_COL) {
+                                            int idx = t.x * MAX_ENEMY_BASE_COL + t.y;
                                             if (enemyShip[idx].flag == TRUE) {
                                                 Detonate(idx, enemyShip, bombBoomPos);
                                                 killedCount++;
@@ -616,6 +611,20 @@ void main(void) {
                         } else break;
                     }
                     fclose(file);
+                }
+            }
+       
+            void readRanking() {
+                FILE *file = NULL;
+                int rank;
+
+                file = fopen("static/ranking.txt", "r");
+                if (file != NULL) {
+                    for (int i = 0; i < 5; i++) {
+                        if (fscanf(file, "%d", &rank) != EOF) ranking[i] = rank;
+                        if (i == 0) hiscore = rank > hiscore ? rank : hiscore;
+                        else break;
+                    }
                 }
             }
         ```

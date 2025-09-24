@@ -36,7 +36,7 @@ extern BULLET     myShipBullet[MAX_MY_BULLET];
 extern BULLET     myShipBomb[MAX_MY_BOMB];
 extern BULLET     enemyBullet[MAX_ENEMY_BULLET];
 extern ENEMYSHIP  enemyShip[MAX_ENEMY];
-extern int        score, killNum, level, myShipRestBomb, ranking[5];
+extern int        score, hiscore, killNum, level, myShipRestBomb, ranking[5];
 
 void DrawMyShip(UPOINT *pt,UPOINT*);
 void DrawColorMyShip();

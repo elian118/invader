@@ -15,6 +15,7 @@ void main(void) {
 
 	ptEnd.x = 36;
 	ptEnd.y = 12;
+	readRanking();
 	while(loop) {
 		play();
 		gameOver(&ptEnd, &loop);

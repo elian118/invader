@@ -238,22 +238,17 @@ void CheckBombHit(ENEMYSHIP *enemyShip, BULLET *myShipBomb, BULLET *bombBoomPos)
                     if (isShotDown) {
                         int killedCount = 0;
                         myShipBomb[i].flag = FALSE;
-
                         Detonate(j, enemyShip, bombBoomPos);
+                    	UPOINT bombHitEnemy = {j / MAX_ENEMY_BASE_COL, j % MAX_ENEMY_BASE_COL};
                         killedCount++;
 
-                        int row = j / MAX_ENEMY_BASE_COL;
-                        int col = j % MAX_ENEMY_BASE_COL;
-
-                        int dx[] = {0, 0, -1, 1};
-                        int dy[] = {-1, 1, 0, 0};
-
                         for (int k = 0; k < 4; k++) {
-                            int bRow = row + dy[k];
-                            int bCol = col + dx[k];
+                        	// 반복 실행을 위한 상하좌우 2차원 좌표 배열
+	                        int dXY[4][2] = {{0, -1}, {0, 1}, {-1, 0}, {1, 0}};
+	                        UPOINT t = {bombHitEnemy.x + dXY[k][0], bombHitEnemy.y + dXY[k][1]};
 
-                            if (bRow >= 0 && bRow < MAX_ENEMY_BASE_ROW && bCol >= 0 && bCol < MAX_ENEMY_BASE_COL) {
-                                int idx = bRow * MAX_ENEMY_BASE_COL + bCol;
+                            if (t.x >= 0 && t.x < MAX_ENEMY_BASE_ROW && t.y >= 0 && t.y < MAX_ENEMY_BASE_COL) {
+                                int idx = t.x * MAX_ENEMY_BASE_COL + t.y;
                                 if (enemyShip[idx].flag == TRUE) {
                                     Detonate(idx, enemyShip, bombBoomPos);
                                     killedCount++;

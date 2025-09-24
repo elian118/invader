@@ -10,5 +10,6 @@ void playSound(char* soundFile);
 void renewRanking(int score, int ranking[], int size);
 void updateRanking(int ranking[]);
 void printRanking();
+void readRanking();
 
 #endif

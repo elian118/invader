@@ -24,7 +24,7 @@ void main(void) {
 
 void play() {
 	static UPOINT ptMyOldPos;
-	DWORD         gThisTickCount = GetTickCount();
+	DWORD         gThisTickCount = GetTickCount64();
     DWORD         gCount = gThisTickCount;
 	DWORD         Count = gThisTickCount;
 	DWORD         bulletCount = gThisTickCount;
@@ -47,7 +47,7 @@ void play() {
 	ptHi.y =  1;
 
 	while (TRUE) {
-		gThisTickCount = GetTickCount();
+		gThisTickCount = GetTickCount64();
 	
 		if (_kbhit()) {
 			char inputKey = tolower(_getch());
@@ -100,13 +100,13 @@ void gameOver (UPOINT *ptEnd, int *loop) {
 	ABoom[6] = "   *   ";
 	ABoom[7] = "       ";
 
-	DWORD thisTickCount = GetTickCount();
+	DWORD thisTickCount = GetTickCount64();
 	DWORD bCount = thisTickCount;
 	int bp = 0;
 
 	for (;;) {
 		if (timeFlag == FALSE) {
-			thisTickCount = GetTickCount();
+			thisTickCount = GetTickCount64();
 
 			if (thisTickCount - bCount > 100) { // 100ms마다 실행
 				playSound("assets/big-bomb-explosion.wav");

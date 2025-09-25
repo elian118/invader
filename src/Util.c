@@ -42,9 +42,8 @@ void UpdateRanking(int ranking[]) {
         for (int i = 0; i < 5; i++) {
             fprintf(file, "%d\n", ranking[i]);
         }
+        fclose(file);
     }
-
-    fclose(file);
 }
 
 void PrintRanking() {

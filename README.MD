@@ -1,5 +1,6 @@
 ## 인베이더 프로그램 개선하기 
-<h3>[☞ 유튜브에서 보려면 여길 클릭하세요!!](https://youtube.com/playlist?list=PLoDc3gbeIKhjyT8i-xp5kRtcnzNjIF2-o&si=U7oldxNXraojyZa-)</h3>
+
+[☞ 유튜브에서 보려면 여길 클릭하세요!!](https://youtube.com/playlist?list=PLoDc3gbeIKhjyT8i-xp5kRtcnzNjIF2-o&si=U7oldxNXraojyZa-)
 
 ### 개요
 C언어로 구현한 불완전 상태의 초기 버전 텍스트 게임 소스를 분석하고 문제를 고치거나 개선해 완성도를 높여야 한다.

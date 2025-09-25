@@ -29,7 +29,7 @@ C언어로 구현한 불완전 상태의 초기 버전 텍스트 게임 소스�
    - 빌드: CMake `CMakeLists.txt`
         ```txt
             cmake_minimum_required(VERSION 3.31.6)
-            project(Project1)
+            project(invader)
      
             # utf-8 컴파일 옵션 적용
             add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/source-charset:utf-8>)
@@ -38,7 +38,7 @@ C언어로 구현한 불완전 상태의 초기 버전 텍스트 게임 소스�
             include_directories(include)
             
             # 소스 파일이 있는 디렉토리와 파일 지정
-            add_executable(Project1
+            add_executable(invader
                 Invader.c
                 src/Console.c
                 src/MyChar.c
@@ -47,10 +47,10 @@ C언어로 구현한 불완전 상태의 초기 버전 텍스트 게임 소스�
             )
             
             # 생성된 실행 파일에 라이브러리 연결
-            target_link_libraries(Project1 winmm)
+            target_link_libraries(invader winmm)
             
             # 프로젝트 루트 경로를 나타내는 매크로 정의
-            target_compile_definitions(Project1
+            target_compile_definitions(invader
                 PRIVATE # 소스 파일에만 적용
                 PROJECT_ROOT_DIR="${CMAKE_SOURCE_DIR}"
             )
@@ -123,7 +123,8 @@ C언어로 구현한 불완전 상태의 초기 버전 텍스트 게임 소스�
 ### 과제 풀이
 
 ---
-인베이더는 텍스트 기반 게임으로, 1978년 일본의 게임 개발사 타이토에서 개발한 "스페이스 인베이더(Space Invaders)"를 모티브로 했다.
+인베이더는 텍스트 기반 게임으로, 1978년 일본의 게임 개발사 타이토에서 개발한<br/>
+"스페이스 인베이더(Space Invaders)"를 모티브로 했다.
 
 텍스트 기반 게임은 커서를 감추고 지정된 매 틱마다 printf문을 출력하고<br/>
 바로 다음 틱에서 이전 출력문을 지우고 다시 그리는 것의 반복으로 구현된다.<br/>
@@ -587,9 +588,8 @@ void main(void) {
                     for (int i = 0; i < 5; i++) {
                         fprintf(file, "%d\n", ranking[i]);
                     }
+                    fclose(file);
                 }
-
-                fclose(file);
             }
 
             void PrintRanking() {

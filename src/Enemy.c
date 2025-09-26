@@ -171,7 +171,7 @@ void CheckEnemy(ENEMYSHIP *enemyShip) {
 	CheckBulletHit(enemyShip, myShipBullet, boomBulletPos);
 
 	// 폭탄을 순회하며 격추여부 확인
-	CheckBombHit(enemyShip, myShipBomb, bombBoomPos);
+	if (myShipRestBomb >= 0) CheckBombHit(enemyShip, myShipBomb, bombBoomPos);
 }
 
 void DrawColorEnemyShip() {

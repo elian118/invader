@@ -443,9 +443,7 @@ void main(void) {
                 int i; // 변수 i를 두 곳 이상의 for문에서 사용중이므로 초기 지역 변수 j만 제거
                 static BULLET boomBulletPos[MAX_MY_BULLET]; // 폭발한 총알 위치
                 static BULLET bombBoomPos[MAX_ENEMY]; // 폭발한 폭탄 위치
-                int bombCleans = 0; // 남은 폭탄에 격추된 잔상들
-                // static int flag; // 사용되는 곳 없음
-
+                
                 // 직전 틱의 격추 잔상("***") 지우기
                 for (i = 0; i < MAX_MY_BULLET ; i++) {
                     if (boomBulletPos[i].flag == TRUE) {
@@ -456,12 +454,11 @@ void main(void) {
                 }
 
                 // 직전 틱의 폭발 잔상(십자대형 "***" 5개) 지우기
-                for (i = 0; i < MAX_ENEMY && bombCleans < 5; i++) { // 폭발 범위에 있었는지 확인해야 하므로 모든 적의 격추상태를 확인
+                for (i = 0; i < MAX_ENEMY && myShipRestBomb >= 0; i++) { // 폭발 범위에 있었는지 확인해야 하므로 모든 적의 격추상태를 확인
                     if (bombBoomPos[i].flag == TRUE) {
                         goToXY(bombBoomPos[i].pos);
                         printf("   ");
                         bombBoomPos[i].flag = FALSE;
-                        bombCleans++;
                     }
                 }
 
